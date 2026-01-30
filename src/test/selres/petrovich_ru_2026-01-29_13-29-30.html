@@ -1,0 +1,572 @@
+<html lang="ru"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Петрович — Введите капчу</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
+    <style>
+      :root {
+        color-scheme: light only;
+        --color-brand-bg: #ffcc33;
+        --color-card-bg: #ffffff;
+        --color-border: #d9dde3;
+        --color-text-primary: rgba(0, 0, 0, 0.9);
+        --color-text-muted: rgba(0, 0, 0, 0.6);
+        --color-text-soft: rgba(0, 0, 0, 0.5);
+        --color-button-bg: #ffe38f;
+        --shadow-card: 0px 24px 38px rgba(68, 92, 130, 0.14),
+          0px 9px 46px rgba(68, 92, 130, 0.12),
+          0px 11px 15px rgba(68, 92, 130, 0.2);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Roboto", sans-serif;
+        background: var(--color-brand-bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .page {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 32px 16px;
+      }
+
+      .captcha-card {
+        width: 400px;
+        max-width: calc(100vw - 32px);
+        background: var(--color-card-bg);
+        border-radius: 12px;
+        box-shadow: var(--shadow-card);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .card-header-spacer {
+        height: 48px;
+        background: transparent;
+      }
+
+      .card-body {
+        padding: 0 24px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+      }
+
+      .card-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        margin-top: 8px;
+      }
+
+      .logo-stack {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .brand-mark {
+        display: block;
+        width: 109px;
+        height: auto;
+      }
+
+      .card-title {
+        margin: 0;
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 400;
+        letter-spacing: 0.15px;
+        color: var(--color-text-primary);
+      }
+
+      .captcha-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .captcha-block {
+        width: 100%;
+      }
+
+      .captcha-placeholder {
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+        height: 148px;
+        background: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #captcha {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+
+      .refresh-button {
+        display: inline-flex;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 0;
+        background: none;
+        border: none;
+        font-size: 14px;
+        line-height: 14px;
+        letter-spacing: 0.15px;
+        font-weight: 400;
+        color: var(--color-text-muted);
+        cursor: pointer;
+        position: relative;
+      }
+
+      .refresh-button .refresh-text {
+        position: relative;
+        padding-bottom: 1px;
+      }
+
+      .refresh-button .refresh-text::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-bottom: 1px dashed rgba(0, 0, 0, 0.35);
+      }
+
+      .refresh-button:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(30, 30, 30, 0.2);
+        border-radius: 4px;
+        padding-inline: 4px;
+        margin-inline: -4px;
+      }
+
+      .refresh-icon {
+        width: 16px;
+        height: 16px;
+        display: inline-flex;
+        margin-top: -1px;
+      }
+
+      .refresh-icon svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .form-section {
+        display: flex;
+        flex-direction: column;
+        gap: 48px;
+        margin-top: 24px;
+      }
+
+      .input-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .input-stack input {
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #1e1e1e;
+        padding: 5px 0 7px;
+        font-size: 14px;
+        line-height: 22px;
+        letter-spacing: 0.15px;
+        color: var(--color-text-primary);
+        background: transparent;
+        caret-color: #1e1e1e;
+      }
+
+      .input-stack input:focus {
+        outline: none;
+        border-bottom-color: #1e1e1e;
+      }
+
+      .input-error {
+        display: none;
+        font-size: 12px;
+        line-height: 16px;
+        letter-spacing: 0.4px;
+        color: #d62f2f;
+      }
+
+      .input-stack.has-error input {
+        border-bottom-color: #d62f2f;
+      }
+
+      .input-stack.has-error input:focus {
+        border-bottom-color: #d62f2f;
+      }
+
+      .input-stack.has-error .input-error {
+        display: block;
+      }
+
+      .submit-button {
+        width: 100%;
+        padding: 8px 24px;
+        border: none;
+        border-radius: 4px;
+        background: var(--color-button-bg);
+        color: var(--color-text-soft);
+        font-size: 16px;
+        line-height: 40px;
+        font-weight: 500;
+        letter-spacing: 0.15px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        cursor: not-allowed;
+      }
+
+      .submit-button:enabled {
+        cursor: pointer;
+        color: var(--color-text-primary);
+      }
+
+      .submit-button span {
+        pointer-events: none;
+      }
+
+      @media (max-width: 480px) {
+        body {
+          align-items: flex-start;
+          background: #ffffff;
+        }
+
+        .page {
+          align-items: stretch;
+          justify-content: center;
+          padding: 0;
+        }
+
+        .captcha-card {
+          width: 100%;
+          max-width: 360px;
+          margin: 0 auto;
+          border-radius: 16px;
+          box-shadow: none;
+        }
+
+        .card-header-spacer {
+          display: none;
+        }
+
+        .card-body {
+          padding: 24px 16px 32px;
+          gap: 18px;
+        }
+
+        .card-header {
+          gap: 12px;
+          margin-top: 0;
+        }
+
+        .card-title {
+          font-size: 18px;
+          line-height: 24px;
+          letter-spacing: 0.2px;
+          text-align: center;
+        }
+
+        .captcha-section {
+          gap: 12px;
+        }
+
+        .captcha-placeholder {
+          height: 136px;
+        }
+
+        .refresh-button {
+          font-size: 13px;
+          line-height: 16px;
+        }
+
+        .form-section {
+          gap: 28px;
+          margin-top: 16px;
+        }
+
+        .input-stack {
+          gap: 4px;
+        }
+
+        .submit-button {
+          padding: 10px 20px;
+          border-radius: 6px;
+          line-height: 44px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>Пожалуйста, включите javascript.</noscript>
+    <main class="page">
+      <section class="captcha-card" aria-labelledby="captcha-title">
+        <div class="card-header-spacer" aria-hidden="true"></div>
+        <div class="card-body">
+          <header class="card-header">
+            <div class="logo-stack" aria-hidden="true">
+              <svg class="brand-mark" width="110" height="24" viewBox="0 0 110 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_40_14524)">
+                  <g clip-path="url(#clip1_40_14524)">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1168 7.29173C20.2487 7.94633 20.403 8.44976 20.5837 8.8038C20.7621 9.15262 21.0663 9.32748 21.4943 9.32748L20.3594 12.0989C19.9125 13.1827 19.4387 14.8291 18.9259 17.0265C18.4214 19.2332 18.2611 20.8013 18.4467 21.7409C18.6297 22.6683 19.06 23.2746 19.7307 23.5655C20.3985 23.8492 21.0393 23.9935 21.6591 23.9935C22.6039 23.9935 23.6922 23.8879 24.9229 23.6653C26.15 23.4484 27.0749 23.2211 27.6974 22.9855C27.9895 22.8771 28.1713 22.703 28.2594 22.4739C28.34 22.2474 28.3107 21.7747 28.1694 21.0598C28.0937 20.6813 27.9254 20.4919 27.6506 20.4919C27.2722 20.4919 26.8376 20.5757 26.3521 20.7457C25.865 20.9113 25.3715 21.0464 24.8726 21.1452C24.3716 21.2523 23.5828 21.3014 22.503 21.3014C22.2289 21.3014 22.0471 21.2694 21.9552 21.205C21.866 21.1452 21.8037 21.0325 21.771 20.8708C21.6848 20.4366 21.771 19.68 22.0267 18.5951C22.2776 17.5073 22.5366 16.612 22.7937 15.9008L24.9902 15.8458C25.9221 15.8231 26.5431 15.798 26.8575 15.7601C27.1723 15.7243 27.3729 15.6478 27.4574 15.5305C27.5414 15.4082 27.5719 15.191 27.5384 14.8733C27.5137 14.579 27.5103 14.3611 27.5214 14.2166C27.5247 14.1802 27.5328 14.1284 27.5455 14.0688C27.556 13.9984 27.5611 13.9411 27.5507 13.8895C27.4682 13.4752 26.9155 13.266 25.8961 13.266C25.108 13.266 24.236 13.3198 23.2772 13.4339C23.5464 12.5468 23.926 11.486 24.4185 10.2528C24.6587 9.6316 24.8556 9.21655 25.0036 9.00158C25.151 8.78343 25.3592 8.65225 25.6285 8.59481C25.898 8.53942 26.4164 8.51318 27.1923 8.51318C27.4041 8.51318 28.0875 8.55839 29.2511 8.65225C29.2939 8.65225 29.3741 8.65887 29.4927 8.66741C29.6076 8.67632 29.6968 8.68103 29.75 8.68103C30.0896 8.68103 30.236 8.57227 30.1914 8.3517C30.1617 8.20473 30.0163 7.915 29.7552 7.48659C29.2898 6.71814 28.8984 6.2333 28.5725 6.02329C28.2474 5.81405 27.7784 5.70988 27.167 5.70988C25.8087 5.70988 24.2639 5.81405 22.5321 6.02329C20.7957 6.23343 19.9923 6.65331 20.1168 7.29173Z" fill="#ED1C24"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M84.7669 22.3258C85.0556 21.8846 85.2967 21.54 85.4881 21.2942C85.6882 21.0413 86.0685 20.5635 86.6184 19.8555C87.1726 19.1506 87.7191 18.4543 88.2582 17.7752C88.7931 17.0968 89.3077 16.4658 89.7914 15.8753C90.2833 15.2886 90.827 14.651 91.4275 13.9645L90.7 17.1205C90.4368 18.3038 90.2666 19.09 90.1918 19.4777C90.1209 19.8641 90.0708 20.2583 90.0436 20.6548C90.0172 21.0566 90.0324 21.4118 90.0937 21.7235C90.1722 22.1252 90.4 22.4981 90.7636 22.8364C91.131 23.1816 91.5284 23.4522 91.9643 23.6575C92.4016 23.8624 92.7336 23.9645 92.9669 23.9645C93.2798 23.9645 93.4814 23.7034 93.562 23.1766C93.6411 22.6513 93.7348 21.5612 93.8325 19.9056C93.9396 18.2558 94.1075 16.642 94.3465 15.0712C94.5824 13.497 94.9748 11.8641 95.5296 10.1728C96.6927 9.17809 97.2258 8.4416 97.1321 7.9588C97.0707 7.65061 96.8642 7.27721 96.5144 6.83593C96.1592 6.39554 95.8174 6.17573 95.4865 6.17573C95.1702 6.17573 94.5318 6.63802 93.5619 7.56656C92.5919 8.49674 91.5248 9.6037 90.3543 10.8942C89.1899 12.1869 88.1216 13.4006 87.1508 14.5417C86.1769 15.6776 85.5892 16.3951 85.3763 16.6815C85.7093 15.1261 86.0088 13.8475 86.2738 12.8498C86.545 11.8548 86.825 10.8929 87.1118 9.95532C87.4025 9.02042 87.5795 8.40963 87.6562 8.12347C87.7266 7.83476 87.7444 7.60094 87.7098 7.42328C87.6812 7.27708 87.5079 7.05994 87.1995 6.7734C86.8923 6.48571 86.5577 6.22591 86.2001 5.99247C85.8453 5.75979 85.5971 5.64072 85.4536 5.64072C85.202 5.64072 84.9735 5.88243 84.7662 6.36116C84.5584 6.84115 84.3389 7.5486 84.1194 8.48363C83.8954 9.41484 83.7761 9.90324 83.765 9.94284C82.5635 14.4892 81.8191 17.5503 81.5275 19.123C81.2378 20.6939 81.1194 21.6269 81.1768 21.9314C81.2249 22.1527 81.5275 22.4688 82.0993 22.8636C82.6637 23.2579 83.1288 23.4557 83.4938 23.4557C83.7312 23.4557 83.9285 23.3791 84.0905 23.223C84.248 23.0669 84.4733 22.769 84.7669 22.3258Z" fill="#ED1C24"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M108.93 7.68058C108.617 7.40486 108.288 7.15156 107.935 6.9222C107.581 6.69245 107.361 6.5777 107.27 6.5777C106.989 6.5777 106.656 7.01109 106.28 7.86627C105.904 8.72654 105.558 9.65558 105.249 10.6563C104.936 11.6574 104.718 12.3878 104.604 12.8381L103.736 13.094C103.454 13.189 103.043 13.279 102.505 13.3793C101.974 13.4804 101.586 13.5306 101.351 13.5306C101.017 13.5306 100.809 13.3218 100.729 12.9176C100.678 12.6567 100.752 12.1685 100.94 11.4536C101.135 10.735 101.34 10.1051 101.552 9.55739C101.722 9.16629 101.865 8.82409 101.997 8.54977C102.119 8.26845 102.21 8.0536 102.258 7.89734C102.31 7.74146 102.323 7.59539 102.298 7.4716C102.274 7.34947 102.117 7.13577 101.823 6.83267C101.534 6.53249 101.226 6.25474 100.896 6.0092C100.571 5.76481 100.337 5.64077 100.199 5.64077C99.965 5.64077 99.6064 6.17578 99.1214 7.23994C98.6325 8.30398 98.2146 9.45271 97.8701 10.6945C97.519 11.931 97.4059 12.8291 97.5125 13.3743C97.6281 13.961 97.9723 14.5816 98.5408 15.2497C99.1139 15.9172 99.6702 16.2502 100.209 16.2502C100.498 16.2502 101.104 16.1283 102.029 15.8884C102.951 15.6513 103.655 15.4486 104.147 15.2838C104.061 15.5643 103.898 16.2355 103.661 17.287C103.42 18.3388 103.218 19.3273 103.058 20.2459C102.893 21.1664 102.838 21.7691 102.893 22.0486C102.974 22.4552 103.35 22.8102 104.017 23.1179C104.354 23.2744 104.681 23.4544 104.988 23.656C105.301 23.8536 105.499 23.9556 105.587 23.9556C105.848 23.9556 106.035 23.7783 106.134 23.4294C106.233 23.0714 106.306 22.5025 106.354 21.7227C106.401 20.9413 106.427 20.5193 106.435 20.4438C106.656 18.6863 106.86 17.2997 107.039 16.2788C107.22 15.2601 107.42 14.3716 107.646 13.6023C107.87 12.8381 108.215 11.7928 108.675 10.475C108.835 10.008 109.014 9.56249 109.196 9.14235C109.383 8.72641 109.468 8.47361 109.453 8.38714C109.413 8.19815 109.239 7.96064 108.93 7.68058Z" fill="#ED1C24"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M18.9411 4.31341C18.9588 4.27253 18.9778 4.21331 18.9937 4.18427C19.3808 3.08687 19.992 3.83672 20.3252 3.77954C20.8505 3.61742 21.1511 3.15067 21.2618 2.49085C21.3303 2.0958 21.3706 1.28507 21.1584 0.947968C21.0306 0.744457 20.58 0.403914 19.7873 0.252491C18.0417 -0.0842315 14.9609 -0.0797742 12.296 0.233897C10.3165 0.471666 7.7203 1.03062 4.27468 2.29447C3.09713 2.72646 1.25614 2.95799 0.710884 4.36435C0.26919 5.50009 0.436844 6.11202 0.928527 6.39971C2.01225 7.03177 4.67164 6.09292 5.87316 5.71391C5.90636 5.74053 5.94148 5.76715 5.99185 5.80599C5.55093 8.2839 4.57679 11.2633 4.27891 14.0065C3.66777 15.7976 2.49073 20.2425 3.47307 22.0006C5.49991 23.227 6.73681 19.7502 6.58377 19.633C7.09698 18.1014 8.70367 11.3918 8.89362 9.57667C8.939 9.11972 8.97771 8.7532 9.04884 8.27906C9.18586 7.35715 9.20291 6.43983 9.35941 5.5737C9.40235 5.33223 9.54181 5.1328 9.74086 4.9717C10.6231 4.25291 12.6931 4.24209 13.0455 4.24209C13.3197 4.17612 14.0824 4.0601 14.6902 3.86652C14.9588 3.78196 14.9611 4.16759 14.8884 4.61473C14.8156 5.05893 14.6697 5.56516 14.6368 5.72194C14.56 6.09419 14.4854 6.41296 14.397 6.80546C14.2865 7.29717 14.058 8.30046 13.5341 10.5392C12.3473 15.9423 11.4297 20.7481 12.44 23.3564C12.6828 23.7093 13.5056 24.0865 13.7437 23.9812C14.3528 23.8693 14.7907 23.6058 15.1069 23.2481C15.6601 22.6224 15.8328 21.7052 15.8789 20.799C15.9623 19.1396 16.1984 16.5983 16.5802 14.0906C16.8336 12.4263 17.6342 8.72289 18.2904 6.31349C18.5403 5.39859 18.7779 4.68273 18.9411 4.31341Z" fill="#ED1C24"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M35.3197 23.9937C35.5419 23.9937 35.6902 23.8275 35.7619 23.4963C35.8288 23.1654 35.9834 22.1951 36.219 20.5898C36.4553 18.9898 36.7764 17.266 37.1834 15.4153C37.5901 13.5684 38.1834 11.3792 38.9683 8.84128C39.2656 8.76003 39.8297 8.70158 40.6522 8.65624C41.4756 8.61345 42.0827 8.53436 42.4733 8.42255C42.8621 8.30373 43.0174 8.05857 42.9409 7.68262C42.8896 7.41633 42.7323 7.11692 42.4706 6.80096C42.2078 6.47926 41.8511 6.20609 41.3948 5.98233C40.9428 5.75411 40.433 5.64077 39.8697 5.64077C39.7234 5.64077 39.4994 5.6577 39.1993 5.69387C38.8673 5.7294 38.3596 5.76366 37.6814 5.80276C36.9958 5.83778 36.4863 5.87306 36.1489 5.90299C34.2101 6.04766 32.852 6.20902 32.0671 6.38846C31.2842 6.56421 30.9315 6.86476 31.0154 7.2919C31.2692 8.57015 31.8019 9.20704 32.6221 9.20704C32.7498 9.20704 33.6639 9.13662 35.363 8.99666C35.1636 9.75033 34.8785 10.8718 34.5065 12.3678C34.1401 13.8696 33.81 15.2687 33.5206 16.5706C33.2225 17.8711 32.9791 19.0795 32.7831 20.1911C32.5811 21.3084 32.5139 22.0138 32.5738 22.3157C32.6309 22.6013 32.8385 22.8668 33.1985 23.1302C33.5615 23.3855 33.959 23.5931 34.3967 23.7537C34.8354 23.9147 35.1461 23.9937 35.3197 23.9937Z" fill="#ED1C24"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M64.395 14.4234C64.1862 15.6394 63.8411 16.7704 63.3658 17.833C62.8844 18.8957 62.3575 19.7479 61.7836 20.3937C61.2074 21.0439 60.6844 21.3693 60.2168 21.3693C60.0175 21.3693 59.807 21.224 59.5802 20.9307C59.3573 20.6378 59.1944 20.2396 59.0926 19.7413C58.8603 18.5593 58.8469 17.3189 59.0535 16.0414C59.2587 14.759 59.5998 13.5872 60.072 12.5144C60.5498 11.4495 61.0739 10.5883 61.6452 9.93192C62.217 9.27605 62.7184 8.94939 63.1542 8.94939C63.7044 8.94939 64.1161 9.64716 64.3947 11.0464C64.5998 12.0867 64.6002 13.2122 64.395 14.4234ZM66.8972 8.91054C66.589 8.21456 66.2733 7.67916 65.9618 7.30284C65.6493 6.93135 65.4063 6.74324 65.2475 6.74324C65.1565 6.74324 64.9639 6.81571 64.6763 6.9693C64.3884 7.11703 64.1795 7.23559 64.0602 7.31901C63.7108 6.91313 63.3018 6.53209 62.833 6.17347C62.3689 5.81726 61.988 5.64075 61.7048 5.64075C61.2691 5.64075 60.643 6.01669 59.8381 6.77215C59.0333 7.52825 58.2578 8.54822 57.5076 9.82469C56.7606 11.1082 56.2088 12.5763 55.8508 14.2343C55.4907 15.8947 55.4865 17.5941 55.8315 19.3273C56.0344 20.3634 56.4221 21.2334 56.9806 21.9368C57.541 22.6419 58.1654 23.1574 58.847 23.4901C59.5289 23.8274 60.157 23.9938 60.73 23.9938C62.0801 23.9938 63.3775 23.3933 64.6213 22.1948C65.8616 20.9926 66.778 19.4074 67.3685 17.443C67.9602 15.483 68.051 13.4447 67.6331 11.3373C67.4508 10.4201 67.2071 9.60921 66.8972 8.91054ZM77.5925 11.0293C77.2001 11.5507 76.6663 12.035 75.9885 12.4869C75.3136 12.9438 74.6053 13.3014 73.8624 13.5577C74.2669 11.3253 74.4242 9.96172 74.3281 9.47306C74.2731 9.19862 74.087 8.92787 73.7742 8.66042C74.4087 8.46735 75.1171 8.37286 75.9001 8.37286C76.5192 8.37286 77.0157 8.4876 77.3907 8.73059C77.761 8.96964 77.9802 9.26828 78.0502 9.62678C78.1348 10.0458 77.9801 10.513 77.5925 11.0293ZM76.2634 18.7059C75.8335 19.3059 75.2256 19.7982 74.4443 20.1822C73.6609 20.5739 72.8407 20.7637 71.986 20.7637C72.3487 19.5434 72.6296 18.6018 72.8337 17.9512C73.0313 17.2954 73.2064 16.651 73.3461 15.9964C73.8839 15.84 74.3786 15.7601 74.8323 15.7601C75.9506 15.7601 76.5868 16.1577 76.7428 16.9371C76.8552 17.5133 76.6979 18.1049 76.2634 18.7059ZM80.3276 12.4298C80.9244 11.4985 81.1261 10.526 80.9244 9.5212C80.7001 8.37553 80.0429 7.44496 78.9521 6.72491C77.8688 6.00383 76.5328 5.64087 74.9572 5.64087C74.2704 5.64087 73.3313 5.74607 72.1495 5.95544C71.0147 6.15041 70.1734 6.34832 69.6198 6.54508C69.0713 6.74337 68.8383 7.0536 68.9251 7.47973C69.0136 7.92839 69.2341 8.37553 69.5919 8.82764C69.9465 9.2749 70.417 9.54884 71.0067 9.65314C70.7639 11.7429 70.4734 13.5193 70.1215 14.9864C69.7703 16.4564 69.4369 17.6014 69.117 18.4275C68.7984 19.2476 68.5335 19.962 68.3224 20.5599C68.1092 21.1548 68.0449 21.67 68.1322 22.1066C68.1562 22.2285 68.3351 22.4471 68.6705 22.7577C69.0062 23.0632 69.3661 23.3482 69.7477 23.6059C70.1304 23.8613 70.4063 23.9939 70.5789 23.9939C70.8335 23.9939 71.0246 23.8802 71.1576 23.6549C71.2934 23.4259 71.4393 23.018 71.5951 22.4179C72.5108 23.4725 73.3989 23.9939 74.2657 23.9939C75.0891 23.9939 75.9836 23.6125 76.9445 22.8366C77.903 22.0616 78.6761 21.1348 79.2584 20.0622C79.84 18.9823 80.0506 18.0284 79.8858 17.2049C79.7995 16.7684 79.5921 16.3103 79.2659 15.84C78.9407 15.3646 78.4753 14.9502 77.8689 14.5844C78.9077 14.0729 79.7268 13.3595 80.3276 12.4298ZM51.5232 11.6448C51.0143 12.3046 50.3468 12.9254 49.5268 13.5117C48.6977 14.0922 47.9254 14.4968 47.1989 14.7135C47.2948 13.9613 47.4891 12.8877 47.7863 11.4864C47.9614 10.6527 48.097 10.0991 48.1956 9.81997C48.2843 9.53751 48.4354 9.34011 48.635 9.22523C48.8389 9.10743 49.1841 9.03293 49.6792 8.9974C49.8077 8.98123 50.0047 8.96976 50.2687 8.96976C51.391 8.96976 52.0156 9.30356 52.1487 9.97331C52.2412 10.431 52.0322 10.9906 51.5232 11.6448ZM54.3696 7.82447C53.827 7.19892 53.0964 6.67613 52.1596 6.26083C51.2316 5.84579 50.168 5.64087 48.9661 5.64087C48.2782 5.64087 47.5546 5.71499 46.7898 5.86349C46.0228 6.00676 45.3853 6.22721 44.8725 6.51184C44.3589 6.79992 44.1378 7.12734 44.2109 7.50444C44.444 8.66781 44.8702 9.39525 45.4994 9.67734C44.9171 12.1154 44.4495 14.0012 44.1077 15.3317C43.7669 16.6657 43.4105 18.0069 43.0456 19.3677C42.6787 20.7204 42.4644 21.5685 42.3996 21.8963C42.3409 22.2281 42.3276 22.5017 42.368 22.7108C42.4322 23.0314 42.5679 23.2406 42.7824 23.3421C42.9901 23.4445 43.3435 23.5471 43.8329 23.6545C44.0805 23.711 44.3465 23.7807 44.6192 23.8673C44.8906 23.9502 45.079 23.9935 45.1824 23.9935C45.4847 23.9935 45.7127 23.8272 45.8595 23.5007C46.0011 23.1739 46.1233 22.6704 46.223 21.9978C46.3203 21.3232 46.4488 20.4184 46.6146 19.2879C46.7794 18.1609 46.9986 17.0635 47.2592 15.996C48.0554 17.1681 48.7115 17.7537 49.2268 17.7537C49.8339 17.7537 50.6766 17.2516 51.7447 16.2462C52.8172 15.2408 53.7273 14.0993 54.4772 12.82C55.2264 11.541 55.5241 10.5054 55.3632 9.70294C55.2436 9.08311 54.9096 8.45627 54.3696 7.82447Z" fill="#ED1C24"></path>
+                  </g>
+                </g>
+                <defs>
+                  <clipPath id="clip0_40_14524">
+                    <rect width="109" height="24" fill="white" transform="translate(0.45459)"></rect>
+                  </clipPath>
+                  <clipPath id="clip1_40_14524">
+                    <rect width="109" height="23.9999" fill="white" transform="translate(0.454834 -0.000366211)"></rect>
+                  </clipPath>
+                </defs>
+              </svg>
+            </div>
+            <h1 id="captcha-title" class="card-title">Введите капчу</h1>
+          </header>
+
+          <div class="captcha-section">
+            <div class="captcha-block" aria-label="Изображение капчи">
+              <div class="captcha-placeholder">
+                <img id="captcha" src="data:image/jpeg;base64,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">
+              </div>
+            </div>
+
+            <button type="button" class="refresh-button" id="refreshbtn">
+              <span class="refresh-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                  <path d="M3.20629 2.45089C4.53697 1.29784 6.23935 0.664238 8.0001 0.666694C12.0503 0.666694 15.3334 3.94982 15.3334 8.00002C15.3334 9.56642 14.8421 11.0184 14.0061 12.2093L11.6668 8.00002H13.8668C13.8669 6.84988 13.5289 5.72508 12.8949 4.76548C12.2608 3.80588 11.3587 3.05381 10.3007 2.60278C9.24268 2.15176 8.07542 2.02167 6.94406 2.22871C5.8127 2.43574 4.76716 2.97075 3.93742 3.76722L3.20629 2.45089ZM12.7939 13.5491C11.4632 14.7022 9.76084 15.3358 8.0001 15.3333C3.94989 15.3333 0.666748 12.0502 0.666748 8.00002C0.666748 6.43362 1.15808 4.98162 1.99408 3.79069L4.33342 8.00002H2.13342C2.13332 9.15016 2.4713 10.275 3.10533 11.2346C3.73936 12.1942 4.64147 12.9462 5.69949 13.3973C6.75751 13.8483 7.92477 13.9784 9.05613 13.7713C10.1875 13.5643 11.233 13.0293 12.0628 12.2328L12.7939 13.5491Z" fill="rgba(0, 0, 0, 0.5)"></path>
+                </svg>
+              </span>
+              <span class="refresh-text">Обновить капчу</span>
+            </button>
+          </div>
+
+          <div class="form-section">
+            <form id="vform">
+              <label class="input-stack has-error" aria-label="Поле для ввода капчи">
+                <input id="answer" type="text" name="captcha" inputmode="text" autocomplete="off" autofocus="" aria-required="true" aria-invalid="true" aria-describedby="captcha-error">
+                <span class="input-error" id="captcha-error" role="alert"></span>
+              </label>
+
+              <button type="submit" class="submit-button" id="answerbtn">
+                <span>Готово</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+  <script type="text/javascript">
+function onImageLoading() {
+  document.getElementById("answer").disabled = true;
+  document.getElementById("answerbtn").disabled = true;
+  document.getElementById("refreshbtn").disabled = true;
+  document.getElementById("captcha-error").innerText = "";
+}
+
+function onImageLoaded() {
+  document.getElementById("answer").disabled = false;
+  document.getElementById("answer").focus();
+  document.getElementById("answer").value = "";
+  document.getElementById("answerbtn").disabled = false;
+  document.getElementById("refreshbtn").disabled = false;
+  document.getElementById("captcha-error").innerText = "";
+}
+
+function onWrongAnswer() {
+  document.getElementById("captcha-error").innerText = "Неверно введена капча. Попробуйте ещё раз.";
+}
+
+function onTimeExpiration() {
+  document.getElementById("answer").disabled = true;
+  document.getElementById("answerbtn").disabled = true;
+  document.getElementById("refreshbtn").disabled = false;
+  document.getElementById("captcha-error").innerText = "Время истекло. Попробуйте ещё раз.";
+}
+  </script>
+
+  <script type="text/javascript">
+document.getElementById("vform").onsubmit = () => { submitAnswer(); return false; };
+document.getElementById("refreshbtn").onclick = () => { fetchPic(); return false; };
+
+var loadings = 0;
+var ctokenIsExpired = false;
+var vtoken = null;
+var vtokenReceivedAt = 0;
+
+function addLoading() {
+  if (loadings === 0 && !ctokenIsExpired) {
+    onImageLoading();
+  }
+  ++loadings;
+}
+
+function asyncSubLoading() {
+  window.setTimeout(() => {
+    if (loadings > 0)
+      --loadings;
+    if (loadings === 0 && !ctokenIsExpired && vtokenReceivedAt > 0) {
+      onImageLoaded();
+    }
+  }, 50);
+}
+
+function handleVTokenExpiration() {
+  if (ctokenIsExpired)
+    return;
+  onTimeExpiration();
+}
+
+function handleCTokenExpiration() {
+  ctokenIsExpired = true;
+  document.getElementById("refreshbtn").onclick = () => window.location.reload();
+  onTimeExpiration();
+}
+
+var CAPTCHA_ENV = {
+  "REQUEST_ID": "JTd2mZ022mI1",
+  "IP": "85.159.229.4",
+  "DATETIME": "2026-01-29 10:29:19 +0000",
+  "ORIGINAL_URL": "https://petrovich.ru/product/126916/",
+  "PTOKEN_PARAM_NAME_FOR_ORIGINAL_URL": "fa821dba_ipp_har",
+  "CAPTCHA_TOKEN": "RMKBEaJFy9Pc8bbAbdnTGFjy4Ry5LzaRf7AMBF9sUas1iZaY9cD1C4E+OALcOXD2PO6FkQ==",
+  "CAPTCHA_TOKEN_TTL": "600000",
+  "VERIFICATION_TOKEN_TTL": "120000",
+  "CAPTCHA_URL": "https://petrovich.ru/v-captcha-s",
+};
+
+window.setTimeout(() => handleCTokenExpiration(), CAPTCHA_ENV["CAPTCHA_TOKEN_TTL"]);
+
+window.setInterval(
+    () => {
+      if (vtokenReceivedAt > 0) {
+        var vtokenLifetimeCur = Math.floor((Date.now() - vtokenReceivedAt) / 1000);
+        var vtokenLifetimeMax = Math.floor(CAPTCHA_ENV["VERIFICATION_TOKEN_TTL"] / 1000);
+        if (vtokenLifetimeCur > vtokenLifetimeMax) {
+          vtoken = null;
+          vtokenReceivedAt = 0;
+          handleVTokenExpiration();
+        }
+      }
+    }, 500);
+
+function myFetch(verb, args) {
+  var url = CAPTCHA_ENV["CAPTCHA_URL"] + "/" + verb;
+  url += "?ms="+ Date.now() +"&rnd=" + Math.random();
+  url += "&ctoken=" + CAPTCHA_ENV["CAPTCHA_TOKEN"];
+  var getParams = Object.entries(args || {}).map(([k, v]) => k + '=' + v).join('&') || '';
+  if (getParams) {
+    url += '&' + getParams;
+  }
+  return fetch(url).then(res => {
+                           if (!res.ok)
+                             throw new Error(res.status);
+                           return res.json();
+                         });
+}
+
+function fetchPic() {
+  if (ctokenIsExpired)
+    return;
+  addLoading();
+  document.getElementById("captcha").src = '';
+  document.getElementById("answer").value = '';
+  return myFetch("generate", null)
+      .then(json => {
+        var captcha_image_elem = document.getElementById("captcha");
+        if (json.png) {
+          captcha_image_elem.src = "data:image/png;base64," + json.png;
+        } else if (json.jpg || json.jpeg) {
+          captcha_image_elem.src = "data:image/jpeg;base64," + json.jpg || json.jpeg;
+        }
+        vtoken = json.vtoken;
+        vtokenReceivedAt = Date.now();
+        asyncSubLoading();
+      })
+      .catch(er => {
+        console.error(er);
+        if (er.message === "403") {
+          asyncSubLoading();
+          handleCTokenExpiration();
+          return;
+        }
+        return new Promise(
+          resolve => {
+            setTimeout(() => {
+              resolve();
+            }, 5000);
+          }).then(() => {
+            asyncSubLoading();
+            return fetchPic();
+          });
+      });
+}
+
+function submitAnswer() {
+  if (ctokenIsExpired)
+    return;
+  addLoading();
+  return myFetch("verify", {
+                             "vtoken": vtoken,
+                             "answer": (document.getElementById("answer").value + '').trim()
+                           })
+    .then(json => {
+      const result_url = new URL(CAPTCHA_ENV["ORIGINAL_URL"]);
+      result_url.searchParams.append(
+          CAPTCHA_ENV["PTOKEN_PARAM_NAME_FOR_ORIGINAL_URL"], json.ptoken);
+      window.location.href = result_url.href;
+    })
+    .catch(er => {
+      console.error(er);
+      onWrongAnswer();
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve();
+        }, 3000);
+      }).then(() => {
+        asyncSubLoading();
+        return fetchPic();
+      });
+    });
+}
+
+fetchPic();
+  </script>
+
+  
+</body></html>

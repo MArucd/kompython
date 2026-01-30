@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wishdex-parser
+  labels:
+    app: wishdex-parser
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: wishdex-parser
+  type: ClusterIP

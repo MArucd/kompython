@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wishdex-parser
+  labels:
+    app: wishdex-parser
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: wishdex-parser
+  template:
+    metadata:
+      labels:
+        app: wishdex-parser
+    spec:
+      containers:
+        - name: wishdex-parser
+          image: registry.gitlab.com/wishdex/parsing:2275791520
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef: 
+                  name: parser-config
+                  key: DATABASE_URL
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                 name: parser-config
+                 key: GEMINI_API_KEY
+            - name: DEEPSEEK_API_KEY
+              valueFrom:
+                secretKeyRef:
+                 name: parser-config
+                 key: DEEPSEEK_API_KEY
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                 name: parser-config
+                 key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                 name: parser-config
+                 key: AWS_SECRET_ACCESS_KEY
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 150m
+              memory: 512Mi
+          livenessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+      imagePullSecrets:
+        - name: vkcloud-kubernetes-project-image-pull

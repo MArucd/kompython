@@ -1,0 +1,12 @@
+{
+  "name": "Матча Advanced Удзи",
+  "price": "2 326 ₽",
+  "images": [],
+  "description": "Получить консультациюЦеремониальная матча самого высокого грейда в нашем ассортименте. Шелковистое тело, мягкая сливочность и яркие тропические ноты во вкусе.",
+  "specifications": {
+    "2 г 80 мл 80°С 2 мин.": "t_onReady(function() {t_onFuncLoad('t503_init',function() {t503_init('675440980');});});",
+    "Манго, киви, кокосовая сгущенка Удзи, префектура Киото, Япония Бодрит, МАХ антиоксидантов Матча": "t_onReady(function() {t_onFuncLoad('t503_init',function() {t503_init('675440982');});});"
+  },
+  "availability": "В наличии",
+  "origin": "https://pyotea.ru/matcha_ceremonial"
+}
